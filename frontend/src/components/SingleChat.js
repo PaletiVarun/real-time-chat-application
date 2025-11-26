@@ -15,8 +15,9 @@ import animationData from "../animations/typing.json";
 import io from "socket.io-client";
 import UpdateGroupChatModal from "./miscellaneous/UpdateGroupChatModal";
 import { ChatState } from "../Context/ChatProvider";
-const ENDPOINT = "http://localhost:5000"; // "https://talk-a-tive.herokuapp.com"; -> After deployment
+import io from "socket.io-client";
 var socket, selectedChatCompare;
+
 
 const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   const [messages, setMessages] = useState([]);
@@ -105,14 +106,13 @@ const SingleChat = ({ fetchAgain, setFetchAgain }) => {
   };
 
   useEffect(() => {
-    socket = io(ENDPOINT);
-    socket.emit("setup", user);
-    socket.on("connected", () => setSocketConnected(true));
-    socket.on("typing", () => setIsTyping(true));
-    socket.on("stop typing", () => setIsTyping(false));
+  socket = io();  // Auto-connect to same origin
+  socket.emit("setup", user);
+  socket.on("connected", () => setSocketConnected(true));
+  socket.on("typing", () => setIsTyping(true));
+  socket.on("stop typing", () => setIsTyping(false));
+}, []);
 
-    // eslint-disable-next-line
-  }, []);
 
   useEffect(() => {
     fetchMessages();
