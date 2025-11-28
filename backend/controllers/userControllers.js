@@ -15,9 +15,18 @@ const allUsers = asyncHandler(async (req, res) => {
       }
     : {};
 
-  const users = await User.find(keyword).find({ _id: { $ne: req.user._id } });
+  // console.log("SEARCH QUERY:", req.query.search);
+  // console.log("LOGGED USER:", req.user);
+
+  const users = await User.find(keyword).find({
+    _id: { $ne: req.user._id },
+  });
+
+  console.log("RESULT USERS:", users);
+
   res.send(users);
 });
+
 
 //@description     Register new user
 //@route           POST /api/user/
